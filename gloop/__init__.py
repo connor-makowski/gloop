@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/gloop.svg)](https://badge.fury.io/py/gloop)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Generalized Linear Object Oriented Programming (GLOOP) as a simple pythonic interface for OOP access to [PULP](https://coin-or.github.io/pulp/). It features simple objects, helpful methods, and additional error checking that simplifies code and streamlines development. 
+Generalized Linear Object Oriented Programming (GLOOP) as a simple pythonic interface for OOP access to [PULP](https://coin-or.github.io/pulp/). It features simple objects, helpful methods, and additional error checking that simplifies code and streamlines development.
 
 Gloop also happens to be synonymous with the word "pulp" in the English language.
 
@@ -154,4 +154,5 @@ my_model.solve()
 #                'A2__R3__amt': 0.0}}
 ```
 """
+
 from .Model import Model, Variable, Sum

@@ -1,69 +1,13 @@
 import pulp, type_enforced
 from pprint import pprint
+from .__constants__ import SENSE_ALIAS_MAP, SENSE_OPTIONS
 from .__helpers__ import Error
 from .Variable import Variable
 from .Sum import Sum
 
 
 @type_enforced.Enforcer
-class ModelUtils(Error):
-    @staticmethod
-    def variable(**kwargs):
-        """
-        A staticmethod to create a gloop.Variable that is included for backwards compatability.
-
-        Returns a Variable object to be used in an gloop.Model object.
-
-        See gloop.Variable for more information.
-        """
-        return Variable(**kwargs)
-
-    @staticmethod
-    def sum(vector: list):
-        """
-        A staticmethod to create a gloop.utils.Sum that is included for backwards compatability.
-
-        Returns a Sum function to be used in an gloop.Model object.
-
-        See gloop.Sum for more information.
-        """
-        return Sum(vector)
-
-    @staticmethod
-    def get_solvers(available: bool = True, show: bool = True):
-        """
-        Gets solvers that can be used.
-
-        Optional:
-
-        - `available`:
-            - Type: bool
-            - What: A flag to indicate if only available solvers should be shown
-            - Default: True
-        - `show`:
-            - Type: bool
-            - What: A flag to indicate if the solvers should be printed in the console
-            - Default: True
-        """
-        return pulp.listSolvers(onlyAvailable=available)
-
-    @staticmethod
-    def show_solvers(available: bool = True):
-        """
-        Shows solvers that can be used.
-
-        Optional:
-
-        - `available`:
-            - Type: bool
-            - What: A flag to indicate if only available solvers should be shown
-            - Default: True
-        """
-        print(ModelUtils.get_solvers(available=available))
-
-
-@type_enforced.Enforcer
-class Model(ModelUtils):
+class Model(Error):
     def __init__(self, name: str, sense: [str, None]):
         """
         Initialize a new optimization model object.
@@ -78,32 +22,22 @@ class Model(ModelUtils):
             - What: The type of optimization to perform
             - Options: ['maximize','minimize',None]
             - Note: If None, no optimization is performed, but a feasible solution is searched for given the constraints
+            - Note: This is cleaned such that common aliases are accepted. An error is thrown if the sense is not recognized.
         """
-        # Validation Attributes
-        self.__solved__ = False
-        self.__objective_added__ = False
-
         # Standard attributes
         self.__name__ = name
-        self.__sense__ = sense
+        self.__sense__ = self.__sense_cleaner__(sense)
         self.outputs = {"status": "Not Solved"}
 
+        # Validation Attributes
+        self.__solved__ = False
+        self.__objective_added__ = self.__sense__ is None
+
         # Create PuLP Model
-        if sense == None:
-            self.model = pulp.LpProblem(name=self.__name__)
-            self.__objective_added__ = True
-        elif sense.lower() == "maximize":
-            self.model = pulp.LpProblem(
-                name=self.__name__, sense=pulp.LpMaximize
-            )
-        elif sense.lower() == "minimize":
-            self.model = pulp.LpProblem(
-                name=self.__name__, sense=pulp.LpMinimize
-            )
-        else:
-            self.exception(
-                "When creating a model, `sense` must be specified as either `'maximize'`, `'minimize'` or `None`."
-            )
+        __model_kwargs__ = {"name": self.__name__}
+        if self.__sense__ != None:
+            __model_kwargs__["sense"] = self.__sense__
+        self.model = pulp.LpProblem(**__model_kwargs__)
 
     def add_objective(self, fn):
         """
@@ -312,23 +246,13 @@ class Model(ModelUtils):
         }
         return self.outputs["duals"]
 
-    def __validity_checks__(self):
+    def get_model(self):
         """
-        Runs validity checks on the model before solving it
+        Returns the current model object.
 
-        - Checks to make sure the model has not already been solved
-        - Ensures that variables each have unique names
-        - Note: PuLP automatically verifies constraint name uniqueness
+        Note: This is a PuLP model object.
         """
-        # Ensure model is not solved
-        if self.__solved__:
-            self.exception(
-                "This model has already been solved. You can not add any more constraints."
-            )
-        # Ensure Variable Names are Unique
-        variable_names = [i.name for i in self.model.variables()]
-        if len(set(variable_names)) < len(variable_names):
-            self.exception("Overlapping variable names exist in the model.")
+        return self.model
 
     def get_formulation(self):
         """
@@ -374,3 +298,92 @@ class Model(ModelUtils):
             pprint(outputs)
         else:
             print(outputs)
+
+    # Static Methods
+    @staticmethod
+    def variable(**kwargs):
+        """
+        A staticmethod to create a gloop.Variable.
+
+        Returns a Variable object to be used in an gloop.Model object.
+
+        See gloop.Variable for more information.
+        """
+        return Variable(**kwargs)
+
+    @staticmethod
+    def sum(vector: list):
+        """
+        A staticmethod to create a gloop.utils.Sum that is included for backwards compatability.
+
+        Returns a Sum function to be used in an gloop.Model object.
+
+        See gloop.Sum for more information.
+        """
+        return Sum(vector)
+
+    @staticmethod
+    def get_solvers(available: bool = True, show: bool = True):
+        """
+        Gets solvers that can be used.
+
+        Optional:
+
+        - `available`:
+            - Type: bool
+            - What: A flag to indicate if only available solvers should be shown
+            - Default: True
+        - `show`:
+            - Type: bool
+            - What: A flag to indicate if the solvers should be printed in the console
+            - Default: True
+        """
+        return pulp.listSolvers(onlyAvailable=available)
+
+    @staticmethod
+    def show_solvers(available: bool = True, pretty: bool = True):
+        """
+        Shows solvers that can be used.
+
+        Optional:
+
+        - `available`:
+            - Type: bool
+            - What: A flag to indicate if only available solvers should be shown
+            - Default: True
+        """
+        if pretty:
+            pprint(Model.get_solvers(available=available))
+        else:
+            print(Model.get_solvers(available=available))
+
+    # Utility Methods
+    def __validity_checks__(self):
+        """
+        Runs validity checks on the model before solving it
+
+        - Checks to make sure the model has not already been solved
+        - Ensures that variables each have unique names
+        - Note: PuLP automatically verifies constraint name uniqueness
+        """
+        # Ensure model is not solved
+        if self.__solved__:
+            self.exception(
+                "This model has already been solved. You can not add any more constraints."
+            )
+        # Ensure Variable Names are Unique
+        variable_names = [i.name for i in self.model.variables()]
+        if len(set(variable_names)) < len(variable_names):
+            self.exception("Overlapping variable names exist in the model.")
+
+    def __sense_cleaner__(self, sense):
+        """
+        Cleans a passed sense to ensure it is valid and return the appropriate PuLP sense.
+        """
+        if sense is not None:
+            sense = SENSE_ALIAS_MAP.get(sense.lower(), "Invalid")
+            if sense == "Invalid":
+                self.exception(
+                    f"Sense '{sense}' is not a valid sense. Please use one of the following: {SENSE_OPTIONS}"
+                )
+        return sense

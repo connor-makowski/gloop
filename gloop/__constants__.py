@@ -1,3 +1,5 @@
+import pulp
+
 CAT_OPTIONS = ["Continuous", "Binary", "Integer"]
 CAT_ALIAS_MAP = {
     "binary": "Binary",
@@ -9,4 +11,12 @@ CAT_ALIAS_MAP = {
     "cont": "Continuous",
     "real": "Continuous",
     "float": "Continuous",
+}
+
+SENSE_OPTIONS = ["maximize", "minimize"]
+SENSE_ALIAS_MAP = {
+    "max": pulp.LpMaximize,
+    "maximize": pulp.LpMaximize,
+    "min": pulp.LpMinimize,
+    "minimize": pulp.LpMinimize,
 }

@@ -36,13 +36,19 @@
             <li>
                     <a class="variable" href="#CAT_ALIAS_MAP">CAT_ALIAS_MAP</a>
             </li>
+            <li>
+                    <a class="variable" href="#SENSE_OPTIONS">SENSE_OPTIONS</a>
+            </li>
+            <li>
+                    <a class="variable" href="#SENSE_ALIAS_MAP">SENSE_ALIAS_MAP</a>
+            </li>
     </ul>
 
 
 <footer>
 <select id="version-selector">
     <option value="latest">latest</option>
-        <option value="1.0.0b2">1.0.0b2</option>
+        <option value="1.0.0b3">1.0.0b3</option>
         <option value=""></option>
 </select>
 <script>
@@ -91,18 +97,28 @@
 
                         <label class="view-source-button" for="mod-__constants__-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="n">CAT_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Continuous&quot;</span><span class="p">,</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span> <span class="s2">&quot;Integer&quot;</span><span class="p">]</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="n">CAT_ALIAS_MAP</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a>    <span class="s2">&quot;binary&quot;</span><span class="p">:</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>    <span class="s2">&quot;bin&quot;</span><span class="p">:</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>    <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;Integer&quot;</span><span class="p">,</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>    <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="s2">&quot;Integer&quot;</span><span class="p">,</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>    <span class="s2">&quot;continuous&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>    <span class="s2">&quot;cont&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    <span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>    <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="p">}</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">pulp</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="n">CAT_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Continuous&quot;</span><span class="p">,</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span> <span class="s2">&quot;Integer&quot;</span><span class="p">]</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="n">CAT_ALIAS_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="s2">&quot;binary&quot;</span><span class="p">:</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>    <span class="s2">&quot;bin&quot;</span><span class="p">:</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>    <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="s2">&quot;Binary&quot;</span><span class="p">,</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>    <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;Integer&quot;</span><span class="p">,</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>    <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="s2">&quot;Integer&quot;</span><span class="p">,</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    <span class="s2">&quot;continuous&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>    <span class="s2">&quot;cont&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>    <span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;Continuous&quot;</span><span class="p">,</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="p">}</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="n">SENSE_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;maximize&quot;</span><span class="p">,</span> <span class="s2">&quot;minimize&quot;</span><span class="p">]</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="n">SENSE_ALIAS_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">pulp</span><span class="o">.</span><span class="n">LpMaximize</span><span class="p">,</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>    <span class="s2">&quot;maximize&quot;</span><span class="p">:</span> <span class="n">pulp</span><span class="o">.</span><span class="n">LpMaximize</span><span class="p">,</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">pulp</span><span class="o">.</span><span class="n">LpMinimize</span><span class="p">,</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="s2">&quot;minimize&quot;</span><span class="p">:</span> <span class="n">pulp</span><span class="o">.</span><span class="n">LpMinimize</span><span class="p">,</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="p">}</span>
 </span></pre></div>
 
 
@@ -128,6 +144,30 @@
         
     </div>
     <a class="headerlink" href="#CAT_ALIAS_MAP"></a>
+    
+    
+
+                </section>
+                <section id="SENSE_OPTIONS">
+                    <div class="attr variable">
+            <span class="name">SENSE_OPTIONS</span>        =
+<span class="default_value">[&#39;maximize&#39;, &#39;minimize&#39;]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SENSE_OPTIONS"></a>
+    
+    
+
+                </section>
+                <section id="SENSE_ALIAS_MAP">
+                    <div class="attr variable">
+            <span class="name">SENSE_ALIAS_MAP</span>        =
+<span class="default_value">{&#39;max&#39;: -1, &#39;maximize&#39;: -1, &#39;min&#39;: 1, &#39;minimize&#39;: 1}</span>
+
+        
+    </div>
+    <a class="headerlink" href="#SENSE_ALIAS_MAP"></a>
     
     
 

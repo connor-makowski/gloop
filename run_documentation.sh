@@ -16,11 +16,11 @@ cp README.md gloop/__init__.py
 sed -i '1s/^/\"\"\"\n/' gloop/__init__.py
 echo "\"\"\"" >> gloop/__init__.py
 
-echo "from .Model import Model, Variable, Sum" >> gloop/__init__.py
+printf "\nfrom .Model import Model, Variable, Sum\n" >> gloop/__init__.py
 
 
 # Specify versions for documentation purposes
-VERSION="1.0.0b2"
+VERSION="1.0.0b3"
 OLD_DOC_VERSIONS=""
 export version_options="$VERSION $OLD_DOC_VERSIONS"
 
