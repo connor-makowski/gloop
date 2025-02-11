@@ -10,11 +10,11 @@ class ModelUtils(Error):
     @staticmethod
     def variable(**kwargs):
         """
-        A staticmethod to create a gloop.utils.Variable that is included for backwards compatability.
+        A staticmethod to create a gloop.Variable that is included for backwards compatability.
 
         Returns a Variable object to be used in an gloop.Model object.
 
-        See `gloop.utils` for more information.
+        See gloop.Variable for more information.
         """
         return Variable(**kwargs)
 
@@ -23,9 +23,9 @@ class ModelUtils(Error):
         """
         A staticmethod to create a gloop.utils.Sum that is included for backwards compatability.
 
-        Returns a Sum object to be used in an gloop.Model object.
+        Returns a Sum function to be used in an gloop.Model object.
 
-        See `gloop.utils` for more information.
+        See gloop.Sum for more information.
         """
         return Sum(vector)
 
