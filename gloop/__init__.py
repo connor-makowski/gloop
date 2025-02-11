@@ -1,7 +1,10 @@
 """
 # Gloop
-[![PyPI version](https://badge.fury.io/py/gloop.svg)](https://badge.fury.io/py/gloop)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/gloop.svg)](https://badge.fury.io/py/gloop)
+[![Github](https://img.shields.io/badge/--red?logo=github)](https://github.com/connor-makowski/gloop)
+[![Documentation](https://img.shields.io/badge/-Docs-blue?logo=read-the-docs)](https://connor-makowski.github.io/gloop/index.html)
+
 
 Generalized Linear Object Oriented Programming (GLOOP) as a simple pythonic interface for OOP access to [PULP](https://coin-or.github.io/pulp/). It features simple objects, helpful methods, and additional error checking that simplifies code and streamlines development.
 
@@ -15,7 +18,7 @@ pip install gloop
 
 # Getting Started
 
-`gloop` is a package designed for object oriented linear programming access to pulp. [Technical Docs Here](https://connor-makowski.github.io/gloop/index.html).
+`gloop` is a package designed for object oriented linear programming access to pulp. [Technical docs can be found here](https://connor-makowski.github.io/gloop/index.html).
 
 ## Basic Example
 ```py
@@ -41,7 +44,7 @@ my_model.solve()
 
 ## Application Example
 
-<h1>Blinky</h1>
+<h2>Blinky</h2>
 <p>After years of work, your friend Robert, and you launched the brand Blink. Blink's business includes assembling, selling, and distributing a smart pet wearable device, the Blinky22. This device has multiple functions; it monitors pet activity levels, tracks health indicators, provides wellness recommendations, records veterinarian visits, tracks location, and shares this all in real-time through a mobile app. Blinky22 is waterproof and light-weight. The collar is adjustable so that any pet can wear it.</p>
 <p>Blinky is manufactured in two assembly plants and it is sold in three regions. Monthly demand per region is shared in Table 1. Currently, assembly plants have no capacity restrictions and can source as many items as needed. Blink’s 3PL carrier charges a transportation cost of (USD)0.12 per unit per mile.</p>
 <p><b>Table 1: Demand in units</b></p>
