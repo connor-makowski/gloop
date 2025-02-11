@@ -1,8 +1,10 @@
 import pulp, type_enforced
+from .__helpers__ import Error
+from .__constants__ import CAT_OPTIONS, CAT_ALIAS_MAP
 
 
 @type_enforced.Enforcer
-class Variable(pulp.LpVariable):
+class Variable(pulp.LpVariable, Error):
     """
     Creates a variable object to be used in an gloop.Model object.
     """
@@ -40,6 +42,7 @@ class Variable(pulp.LpVariable):
             - What: The category of this variable
             - Default: `Continuous`
             - Options: ['Continuous','Binary','Integer']
+            - Note: This is cleaned such that common aliases are accepted. An error is thrown if the category is not recognized.
         - `initialValue`:
             - Type: int | float
             - What: The initial value of this variable to be used if `warm_start` is set to True
@@ -52,7 +55,7 @@ class Variable(pulp.LpVariable):
             - Note: This is only used if an `initialValue` is set and `warm_start` is set to True for the solver.
         """
         self.name = name
-        self.cat = cat
+        self.cat = self.__cat_cleaner__(cat)
         self.upBound = upBound
         self.lowBound = lowBound
         self.initialValue = initialValue
@@ -72,21 +75,30 @@ class Variable(pulp.LpVariable):
             self.setInitialValue(initialValue)
             if fixInitialValue:
                 self.fixValue()
+        elif fixInitialValue:
+            self.warn("Cannot fix initial value without an initial value.")
 
+    def __cat_cleaner__(self, cat: str) -> str:
+        """
+        Cleans the category string to ensure it is one of the accepted values.
 
-@type_enforced.Enforcer
-def Sum(
-    vector: list[
-        Variable | pulp.LpVariable | pulp.LpAffineExpression | int | float
-    ],
-):
-    """
-    Creates a Sum object to be used in an gloop.Model object.
+        Requires:
 
-    Requires:
+        - `cat`:
+            - Type: str
+            - What: The category of this variable
+            - Options: ['Continuous','Binary','Integer']
 
-    - `vector`:
-        - Type: list of Variable objects, pulp.LpVariable objects, pulp.LpAffineExpression objects, ints, or floats
-        - What: A vector of items (Variables) to sum together
-    """
-    return pulp.lpSum(vector)
+        Returns:
+
+        - `cat`:
+            - Type: str
+            - What: The cleaned category string
+            - Default: 'Continuous
+        """
+        cat_item = CAT_ALIAS_MAP.get(cat.lower())
+        if cat_item is None:
+            self.exception(
+                f"Category '{cat}' is not a valid category. Please use one of the following: {CAT_OPTIONS}"
+            )
+        return cat_item

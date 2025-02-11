@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gloop"
-version = "1.0.0b1"
+version = "1.0.0b2"
 description = "Generalized Linear Object Oriented Programming (GLOOP)"
 authors = [
     {name="Connor Makowski", email="conmak@mit.edu"}

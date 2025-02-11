@@ -1,7 +1,8 @@
 import pulp, type_enforced
 from pprint import pprint
-from .helpers import Error
-from .utils import Variable, Sum
+from .__helpers__ import Error
+from .Variable import Variable
+from .Sum import Sum
 
 
 @type_enforced.Enforcer
@@ -9,7 +10,7 @@ class ModelUtils(Error):
     @staticmethod
     def variable(**kwargs):
         """
-        A backwards compatability staticmethod.
+        A staticmethod to create a gloop.utils.Variable that is included for backwards compatability.
 
         Returns a Variable object to be used in an gloop.Model object.
 
@@ -20,7 +21,7 @@ class ModelUtils(Error):
     @staticmethod
     def sum(vector: list):
         """
-        A backwards compatability staticmethod.
+        A staticmethod to create a gloop.utils.Sum that is included for backwards compatability.
 
         Returns a Sum object to be used in an gloop.Model object.
 
@@ -83,18 +84,22 @@ class Model(ModelUtils):
         self.__objective_added__ = False
 
         # Standard attributes
-        self.name = name
-        self.sense = sense
+        self.__name__ = name
+        self.__sense__ = sense
         self.outputs = {"status": "Not Solved"}
 
         # Create PuLP Model
         if sense == None:
-            self.model = pulp.LpProblem(name=self.name)
+            self.model = pulp.LpProblem(name=self.__name__)
             self.__objective_added__ = True
         elif sense.lower() == "maximize":
-            self.model = pulp.LpProblem(name=self.name, sense=pulp.LpMaximize)
+            self.model = pulp.LpProblem(
+                name=self.__name__, sense=pulp.LpMaximize
+            )
         elif sense.lower() == "minimize":
-            self.model = pulp.LpProblem(name=self.name, sense=pulp.LpMinimize)
+            self.model = pulp.LpProblem(
+                name=self.__name__, sense=pulp.LpMinimize
+            )
         else:
             self.exception(
                 "When creating a model, `sense` must be specified as either `'maximize'`, `'minimize'` or `None`."
@@ -113,7 +118,7 @@ class Model(ModelUtils):
         """
         # Validity Checks
         if self.__objective_added__:
-            if self.sense == None:
+            if self.__sense__ == None:
                 self.exception(
                     "Models with `sense=None` should not have an objective function."
                 )
@@ -121,7 +126,9 @@ class Model(ModelUtils):
                 self.exception(
                     "An objective function has already been added to this model."
                 )
-        if type(fn) != pulp.LpAffineExpression:
+        if not isinstance(
+            fn, (pulp.LpAffineExpression, pulp.LpVariable, Variable)
+        ):
             self.exception(
                 "The objective function is not properly configured, consult the documentation for more information on how to add an objective function."
             )
@@ -161,7 +168,7 @@ class Model(ModelUtils):
             self.exception(
                 "This model has already been solved. You can not add any more constraints."
             )
-        if type(fn) != pulp.LpConstraint:
+        if not isinstance(fn, pulp.LpConstraint):
             self.exception(
                 f"This constraint (Name:{name}) function is not properly configured, consult the documentation for more information on how to add constraints."
             )
@@ -227,7 +234,7 @@ class Model(ModelUtils):
             - Note: Slack values will be None for solvers that do not support them
         """
         # Check the model validity
-        self.validity_checks()
+        self.__validity_checks__()
         # Simplified messaging logging
         if "msg" not in solver_kwargs:
             solver_kwargs["msg"] = 3 if pulp_log else 0
@@ -259,7 +266,7 @@ class Model(ModelUtils):
         self.outputs = {
             "status": f"{pulp.LpStatus[self.model.status]}",
             "objective": (
-                self.model.objective.value() if self.sense != None else None
+                self.model.objective.value() if self.__sense__ != None else None
             ),
             "variables": {i.name: i.value() for i in self.model.variables()},
         }
@@ -305,7 +312,7 @@ class Model(ModelUtils):
         }
         return self.outputs["duals"]
 
-    def validity_checks(self):
+    def __validity_checks__(self):
         """
         Runs validity checks on the model before solving it
 
