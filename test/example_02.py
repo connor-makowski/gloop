@@ -1,56 +1,26 @@
-# Blink
+# Transportation Problem
 import gloop
 
 
 ################### DATA ######################
 # Transportation data
 transport = [
-    {
-        "origin_name": "A1",
-        "destination_name": "R1",
-        "distance": 105,
-        "cost_per_mile": 0.12,
-    },
-    {
-        "origin_name": "A1",
-        "destination_name": "R2",
-        "distance": 256,
-        "cost_per_mile": 0.12,
-    },
-    {
-        "origin_name": "A1",
-        "destination_name": "R3",
-        "distance": 108,
-        "cost_per_mile": 0.12,
-    },
-    {
-        "origin_name": "A2",
-        "destination_name": "R1",
-        "distance": 240,
-        "cost_per_mile": 0.12,
-    },
-    {
-        "origin_name": "A2",
-        "destination_name": "R2",
-        "distance": 136,
-        "cost_per_mile": 0.12,
-    },
-    {
-        "origin_name": "A2",
-        "destination_name": "R3",
-        "distance": 198,
-        "cost_per_mile": 0.12,
-    },
+    {"origin_name": "A1", "destination_name": "R1", "distance": 105},
+    {"origin_name": "A1", "destination_name": "R2", "distance": 256},
+    {"origin_name": "A1", "destination_name": "R3", "distance": 108},
+    {"origin_name": "A2", "destination_name": "R1", "distance": 240},
+    {"origin_name": "A2", "destination_name": "R2", "distance": 136},
+    {"origin_name": "A2", "destination_name": "R3", "distance": 198},
 ]
 
-# Loop through the transport data to create variable and calculate cost
+# Loop through the transport data to create variables and calculate cost
 for t in transport:
     # Create decision variables for each item in transport
     t["amt"] = gloop.Variable(
         name=f"{t['origin_name']}__{t['destination_name']}__amt", lowBound=0
     )
     # Calculate the variable cost of shipping for each item in tranport
-    t["cost"] = t["distance"] * t["cost_per_mile"]
+    t["cost"] = t["distance"] * 0.12
 
 
 # Demand data
