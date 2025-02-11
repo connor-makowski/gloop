@@ -303,7 +303,7 @@ class Model(Error):
     @staticmethod
     def variable(**kwargs):
         """
-        A staticmethod to create a gloop.Variable.
+        A staticmethod alias for gloop.Variable.
 
         Returns a Variable object to be used in an gloop.Model object.
 
@@ -314,7 +314,7 @@ class Model(Error):
     @staticmethod
     def sum(vector: list):
         """
-        A staticmethod to create a gloop.utils.Sum that is included for backwards compatability.
+        A staticmethod alias for gloop.Sum.
 
         Returns a Sum function to be used in an gloop.Model object.
 
