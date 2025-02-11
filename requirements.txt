@@ -1,0 +1,8 @@
+autoflake>=2.3.1
+black>=25.1.0
+build>=1.2.2
+pamda>=2.6.1
+pdoc>=15.0.1
+twine>=6.1.0
+virtualenv>=20.29.1
+-e .
