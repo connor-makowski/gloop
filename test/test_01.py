@@ -1,11 +1,11 @@
-from gloop import Model, Variable
+import gloop
 
 # Create variables
-sugary_amt = Variable(name="sugary", lowBound=0)
-regular_amt = Variable(name="regular", lowBound=0)
+sugary_amt = gloop.Variable(name="sugary", lowBound=0)
+regular_amt = gloop.Variable(name="regular", lowBound=0)
 
 # Initialize the model
-model = Model(name="Crazy_Cereal", sense="maximize")
+model = gloop.Model(name="Crazy_Cereal", sense="maximize")
 
 # Add the Objective Fn
 model.add_objective(fn=(sugary_amt * 0.94) + (regular_amt * 0.82))
