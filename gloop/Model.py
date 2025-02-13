@@ -117,7 +117,7 @@ class Model(Error):
         self,
         solver: str = "PULP_CBC_CMD",
         solver_path: str = "",
-        solver_kwargs: dict = {},
+        solver_kwargs: dict = dict(),
         warm_start: bool = False,
         pulp_log: bool = False,
         except_on_infeasible: bool = True,
