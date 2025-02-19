@@ -56,7 +56,7 @@ my_model.solve()
 ################### OUTPUT #####################
 
 # Show the outputs
-# my_model.show_outputs() #=>
+my_model.show_outputs()
 # {'objective': 145208.16,
 #  'status': 'Optimal',
 #  'variables': {'A1__R1__amt': 2500.0,

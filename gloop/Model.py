@@ -374,7 +374,17 @@ class Model(Error):
         # Ensure Variable Names are Unique
         variable_names = [i.name for i in self.model.variables()]
         if len(set(variable_names)) < len(variable_names):
-            self.exception("Overlapping variable names exist in the model.")
+            overlap = {
+                i: variable_names.count(i)
+                for i in variable_names
+                if variable_names.count(i) > 1
+            }
+            overlap_keys = list(overlap.keys())
+            if len(overlap_keys) > 5:
+                overlap_keys = overlap_keys[:5] + ["..."]
+            self.exception(
+                f"Overlapping variable names exist in the model. {str(overlap_keys)}"
+            )
 
     def __sense_cleaner__(self, sense):
         """
