@@ -14,5 +14,5 @@ my_model.add_constraint(name="my_constraint_name", fn=my_variable <= 5)
 my_model.solve()
 
 # Show the results
-# my_model.show_outputs()
+my_model.show_outputs()
 # => {'status': 'Optimal', 'objective': 5.0, 'variables': {'my_variable_name': 5.0}}

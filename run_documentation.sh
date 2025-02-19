@@ -20,8 +20,8 @@ printf "\nfrom .Model import Model, Variable, Sum\n" >> gloop/__init__.py
 
 
 # Specify versions for documentation purposes
-VERSION="1.0.0"
-OLD_DOC_VERSIONS=""
+VERSION="1.0.1"
+OLD_DOC_VERSIONS="1.0.0"
 export version_options="$VERSION $OLD_DOC_VERSIONS"
 
 # generate the docs for a version function:

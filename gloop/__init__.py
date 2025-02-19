@@ -10,6 +10,14 @@ Generalized Linear Object Oriented Programming (GLOOP) as a simple pythonic inte
 
 Gloop also happens to be synonymous with the word "pulp" in the English language.
 
+## Why use Gloop?
+- **Simple**: Gloop is simple and easy to use.
+- **Object Oriented**: Gloop is object oriented by design.
+- **Error Checking**: Gloop has additional error checking to help you catch mistakes early.
+    - This includes checking for duplicate names, invalid constraints, passed types, and more.
+- **Intuitive**: Gloop is intuitive
+- **Unique**: Gloops is unique in nature and can help you think differently about how you code for linear programming.
+
 # Setup
 
 ```
@@ -20,7 +28,7 @@ pip install gloop
 
 `gloop` is a package designed for object oriented linear programming access to pulp. [Technical docs can be found here](https://connor-makowski.github.io/gloop/index.html).
 
-## Basic Example
+## Bare Bones Example
 ```py
 import gloop
 
@@ -42,11 +50,10 @@ my_model.solve()
 #=> {'status': 'Optimal', 'objective': 5.0, 'variables': {'my_variable_name': 5.0}}
 ```
 
-## Application Example
+## Example
 
-<h2>Blinky</h2>
-<p>After years of work, your friend Robert, and you launched the brand Blink. Blink's business includes assembling, selling, and distributing a smart pet wearable device, the Blinky22. This device has multiple functions; it monitors pet activity levels, tracks health indicators, provides wellness recommendations, records veterinarian visits, tracks location, and shares this all in real-time through a mobile app. Blinky22 is waterproof and light-weight. The collar is adjustable so that any pet can wear it.</p>
-<p>Blinky is manufactured in two assembly plants and it is sold in three regions. Monthly demand per region is shared in Table 1. Currently, assembly plants have no capacity restrictions and can source as many items as needed. Blink’s 3PL carrier charges a transportation cost of (USD)0.12 per unit per mile.</p>
+<h2>Transportation Problem</h2>
+<p>A product is manufactured in two assembly plants and sold in three regions. Monthly demand per region is shared in Table 1. Currently, assembly plants have no capacity restrictions and can source as many items as needed. Transportation costs (USD)0.12 per unit per mile.</p>
 <p><b>Table 1: Demand in units</b></p>
 <table width="90%">
 <tbody>
@@ -91,53 +98,56 @@ my_model.solve()
 <p><strong>Formulate a model using the available information. Your goal is to minimize the total transportation cost.</strong></p>
 
 ```py
-# Blink
+# Transportation Problem
 import gloop
 
 
 ################### DATA ######################
 # Transportation data
 transport = [
-    {'origin_name':'A1', 'destination_name':'R1', 'distance': 105, 'cost_per_mile':0.12,},
-    {'origin_name':'A1', 'destination_name':'R2', 'distance': 256, 'cost_per_mile':0.12,},
-    {'origin_name':'A1', 'destination_name':'R3', 'distance': 108, 'cost_per_mile':0.12,},
-    {'origin_name':'A2', 'destination_name':'R1', 'distance': 240, 'cost_per_mile':0.12,},
-    {'origin_name':'A2', 'destination_name':'R2', 'distance': 136, 'cost_per_mile':0.12,},
-    {'origin_name':'A2', 'destination_name':'R3', 'distance': 198, 'cost_per_mile':0.12,},
+    {"origin_name": "A1", "destination_name": "R1", "distance": 105},
+    {"origin_name": "A1", "destination_name": "R2", "distance": 256},
+    {"origin_name": "A1", "destination_name": "R3", "distance": 108},
+    {"origin_name": "A2", "destination_name": "R1", "distance": 240},
+    {"origin_name": "A2", "destination_name": "R2", "distance": 136},
+    {"origin_name": "A2", "destination_name": "R3", "distance": 198},
 ]
 
-# Loop through the transport data to create variable and calculate cost
+# Loop through the transport data to create variables and calculate cost
 for t in transport:
     # Create decision variables for each item in transport
-    t['amt']=gloop.Variable(name=f"{t['origin_name']}__{t['destination_name']}__amt", lowBound=0)
+    t["amt"] = gloop.Variable(
+        name=f"{t['origin_name']}__{t['destination_name']}__amt", lowBound=0
+    )
     # Calculate the variable cost of shipping for each item in tranport
-    t['cost']=t['distance']*t['cost_per_mile']
+    t["cost"] = t["distance"] * 0.12
 
 
 # Demand data
 demand = [
-    {'name':'R1', 'demand':2500},
-    {'name':'R2', 'demand':4350},
-    {'name':'R3', 'demand':3296},
+    {"name": "R1", "demand": 2500},
+    {"name": "R2", "demand": 4350},
+    {"name": "R3", "demand": 3296},
 ]
 
 
 ################### Model #####################
 # Initialize the model
-my_model = gloop.Model(name="transportation_example", sense='minimize')
+my_model = gloop.Model(name="transportation_example", sense="minimize")
 
 
 # Add the Objective Fn
-my_model.add_objective(
-    fn=gloop.Sum([t['amt']*t['cost'] for t in transport])
-)
+my_model.add_objective(fn=gloop.Sum([t["amt"] * t["cost"] for t in transport]))
 
 # Add Constraints
 ## Demand Constraint
 for d in demand:
     my_model.add_constraint(
         name=f"{d['name']}__demand",
-        fn=gloop.Sum([t['amt'] for t in transport if t['destination_name']==d['name']]) >= d['demand'],
+        fn=gloop.Sum(
+            [t["amt"] for t in transport if t["destination_name"] == d["name"]]
+        )
+        >= d["demand"],
     )
 
 # Solve the model
