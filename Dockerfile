@@ -18,11 +18,8 @@ ENV GLPK_SOLVER_PATH=/usr/bin/glpsol
 # This includes egg installing the gloop package
 COPY gloop/__init__.py /app/gloop/__init__.py
 COPY pyproject.toml /app/pyproject.toml
-RUN pip install -e .
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
 
-COPY ./util_test_helper.sh /app/util_test_helper.sh
-COPY ./test/__init__.py /app/test/__init__.py
-
+# Drop into a shell by default
 CMD ["/bin/bash"]
-# Comment out ENTRYPOINT to drop into an interactive shell for debugging when using test.sh
-ENTRYPOINT ["/app/util_test_helper.sh"]
