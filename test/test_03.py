@@ -85,16 +85,44 @@ used = [i for i in data if (i["use"].value()) == 1]
 for item in used:
     matrix[item["row"] - 1][item["col"] - 1] = item["value"]
 
-expected_matrix = [
-    [7, 6, 9, 1, 5, 3, 4, 2, 8],
-    [2, 3, 5, 9, 4, 8, 7, 6, 1],
-    [1, 4, 8, 6, 2, 7, 5, 9, 3],
-    [3, 8, 6, 5, 1, 4, 2, 7, 9],
-    [9, 7, 2, 3, 8, 6, 1, 5, 4],
-    [5, 1, 4, 2, 7, 9, 3, 8, 6],
-    [4, 2, 1, 8, 9, 5, 6, 3, 7],
-    [6, 9, 7, 4, 3, 2, 8, 1, 5],
-    [8, 5, 3, 7, 6, 1, 9, 4, 2],
-]
-if matrix != expected_matrix:
+def check_output(constraints, matrix):
+    for constraint in constraints:
+        if matrix[constraint["row"] - 1][constraint["col"] - 1] != constraint["value"]:
+            return False
+    if len(matrix) != 9:
+        return False
+    for row in matrix:
+        if len(row) != 9:
+            return False
+    for row in matrix:
+        for cell in row:
+            if not isinstance(cell, int):
+                return False
+            if cell < 1 or cell > 9:
+                return False
+    for row in matrix:
+        if len(set(row)) != 9:
+            return False
+    for col in range(9):
+        if len(set([matrix[row][col] for row in range(9)])) != 9:
+            return False
+    for row in range(3):
+        for col in range(3):
+            if len(set([matrix[row * 3 + i][col * 3 + j] for i in range(3) for j in range(3)])) != 9:
+                return False
+    return True
+
+# expected_matrix = [
+#     [7, 6, 9, 1, 5, 3, 4, 2, 8],
+#     [2, 3, 5, 9, 4, 8, 7, 6, 1],
+#     [1, 4, 8, 6, 2, 7, 5, 9, 3],
+#     [3, 8, 6, 5, 1, 4, 2, 7, 9],
+#     [9, 7, 2, 3, 8, 6, 1, 5, 4],
+#     [5, 1, 4, 2, 7, 9, 3, 8, 6],
+#     [4, 2, 1, 8, 9, 5, 6, 3, 7],
+#     [6, 9, 7, 4, 3, 2, 8, 1, 5],
+#     [8, 5, 3, 7, 6, 1, 9, 4, 2],
+# ]
+
+if not check_output(constraints, matrix):
     print("test_03.py failed")
